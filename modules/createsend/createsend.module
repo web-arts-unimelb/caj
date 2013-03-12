@@ -1,0 +1,63 @@
+<?php
+/**
+ * @file
+ * Trivial module for block containing clagged HTML.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function createsend_block_info() {
+  $blocks = array(
+    0 => array(
+      'info' => t('CreateSend List Subscribe'),
+    ),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function createsend_block_configure($delta) {
+   $settings = variable_get('createsend', array());
+
+   $form['description'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Block description'),
+    '#default_value' => $settings['description'],
+    '#description' => t('A brief description of your block. Used on the <a href="@block-overview-page">block overview page</a>.', array('@block-overview-page' => url('admin/build/block')))
+  );
+
+  $form['content'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Block content'),
+    '#rows' => 20,
+    '#default_value' => $settings['content'],
+    '#description' => t('The raw HTML content of the block.'),
+  );
+
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function createsend_block_save($delta = '', $edit = array()) {
+  $settings = array(
+    'description' => $edit['description'],
+    'content'     => $edit['content'],
+  );
+  variable_set('createsend', $settings);
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function createsend_block_view($delta = '') {
+  $settings = variable_get('createsend', array());
+  return array(
+    'subject' => t('CreateSend Block'),
+    'content' => $settings['content'],
+  );
+}

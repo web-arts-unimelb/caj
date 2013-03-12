@@ -1,0 +1,3 @@
+name = CreateSend
+description = Provides the CreateSend mailing list signup form as Drupal block.
+core = 7.x
